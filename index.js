@@ -34,12 +34,13 @@ function semicolonless(source, options) {
 		source.setEncoding('utf8')
 		source.on('readable', function () {
 			var str = source.read()
-			if (str === null) {
-				result.push(semi.remove(sourceStr, {leading: true}))
-				result.push(null)
-			} else {
-				sourceStr += source.read()
+			if (str !== null) {
+				sourceStr += str
 			}
+		})
+		source.on('end', function () {
+			result.push(semi.remove(sourceStr, {leading: true}))
+			result.push(null)
 		})
 		return result
 	}
